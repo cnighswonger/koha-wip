@@ -13,7 +13,7 @@ use DateTime::Format::MySQL;
 eval {use Test::Deep;};
 
 BEGIN {
-    use_ok('C4::Koha', qw( GetAuthorisedValueByCode GetKohaImageurlFromAuthorisedValues GetDailyQuote ));
+    use_ok('C4::Koha', qw( :DEFAULT GetDailyQuote ));
     use_ok('C4::Members');
 }
 
