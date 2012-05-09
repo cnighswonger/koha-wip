@@ -13,7 +13,7 @@ use DateTime::Format::MySQL;
 eval {use Test::Deep;};
 
 BEGIN {
-    use_ok('C4::Koha');
+    use_ok('C4::Koha', qw( GetAuthorisedValueByCode GetKohaImageurlFromAuthorisedValues GetDailyQuote ));
     use_ok('C4::Members');
 }
 
@@ -83,13 +83,13 @@ SKIP:
 
 # test quote retrieval based on id
 
-                my $quote = C4::Koha->GetDailyQuote('id'=>3);
+                my $quote = GetDailyQuote('id'=>3);
                 cmp_deeply ($quote, $expected_quote, "Got a quote based on id.") or
                     diag('Be sure to run this test on a clean install of sample data.');
 
 # test random quote retrieval
 
-                $quote = C4::Koha->GetDailyQuote('random'=>1);
+                $quote = GetDailyQuote('random'=>1);
                 ok ($quote, "Got a random quote.");
 
 # test quote retrieval based on today's date
@@ -103,7 +103,7 @@ SKIP:
 
 #        $expected_quote->{'timestamp'} = DateTime::Format::MySQL->format_datetime(DateTime->now);   # update the timestamp of expected quote data
 
-                $quote = C4::Koha->GetDailyQuote(); # this is the "default" mode of selection
+                $quote = GetDailyQuote(); # this is the "default" mode of selection
                 cmp_deeply ($quote, $expected_quote, "Got a quote based on today's date.") or
                     diag('Be sure to run this test on a clean install of sample data.');
             }
