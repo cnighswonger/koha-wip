@@ -1,0 +1,32 @@
+    [% INCLUDE 'doc-head-open.inc' %]
+    <title>Koha &rsaquo; Cataloging &rsaquo; Marc editor</title>
+    [% INCLUDE 'doc-head-close.inc' %]
+    <link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+    <link rel="stylesheet" type="text/css" href="[% themelang %]/css/quotes.css" />
+    <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/dataTables.fnReloadAjax.js"></script>
+    [% INCLUDE 'datatables-strings.inc' %]
+    </script>
+    <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+    <script type="text/javascript" src="[% themelang %]/js/jquery.jeditable.mini.js"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+    //]]>
+    </script>
+</head>
+<body id="marc_editor" class="cataloging">
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'cat-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; Marc Editor</div>
+
+<div id="doc3" class="yui-t2">
+    <div id="bd">
+        <div id="yui-main">
+            <div class="yui-b">
+            </div>
+        </div>
+    <div class="yui-b noprint">
+    </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]
