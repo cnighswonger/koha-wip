@@ -31,7 +31,7 @@ my $cgi = new CGI;
 
 my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
     {
-        template_name   => "cataloging/biblio.tt",
+        template_name   => "cataloging/marc_editor.tt",
         query           => $cgi,
         type            => "intranet",
         authnotrequired => 0,
