@@ -57,41 +57,40 @@ sub output_editor {
     my $xml_parser = XML::LibXML->new(recover => 0);
     my $xslt_parser = XML::LibXSLT->new();
 
-    my $xml_source = $xml_parser->parse_string($self->{'marc_xml'});
-    my $xslt_stylesheet = $xslt_parser->parse_stylesheet($xml_parser->parse_file($self->{'framework_xslt'}));
-    my $parsed_results = $xslt_stylesheet->transform($xml_source);
-    return $xslt_stylesheet->output_string($parsed_results);
+    my $xml = $xml_parser->parse_string($self->{'marc_xml'});
+    my $xslt = $xslt_parser->parse_stylesheet($xml_parser->parse_file($self->{'framework_xslt'}));
+    my $parsed_results = $xslt->transform($xml);
+    return $xslt->output_string($parsed_results);
 }
 
 ## AUTOLOAD method taken from http://www.perlmonks.org/?node_id=444212
 
 sub AUTOLOAD {
-    my ($self, $value)= @_ ;
+    my ($self, $value)= @_;
 
-    return if $AUTOLOAD =~ /::DESTROY$/ ;
-
+    return if $AUTOLOAD =~ /::DESTROY$/;
     my $attname = $AUTOLOAD;
-    $attname =~ s/.*::// ;
+    $attname =~ s/.*:://;
 
-    if(! exists $self->{$attname}){
+    if(!exists $self->{$attname}){
         croak("Attribute $attname does not exists in $self");
     }
 
-    my $pkg = ref($self ) ;
+    my $pkg = ref($self);
     my $code = qq{
-                   package $pkg ;
+                   package $pkg;
                    sub $attname {
-                           my \$self = shift ;
+                           my \$self = shift;
                            \@_ ? \$self->{$attname} = shift :
-                           \$self->{$attname} ;
+                           \$self->{$attname};
                    }
        };
 
-    eval $code ;
-    if( $@ ){
+    eval $code;
+    if($@){
         croak("Failed to create method $AUTOLOAD : $@");
     }
-    goto &$AUTOLOAD ;
+    goto &$AUTOLOAD;
 }
 
 
