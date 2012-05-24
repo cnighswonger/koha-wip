@@ -27,6 +27,10 @@ use C4::Koha;
 use C4::Context;
 use C4::Output;
 
+use Koha::MarcEditor qw(RECORD_TYPES);
+
+#use constant RECORD_TYPES   => qw(bib auth hold);
+
 my $cgi = new CGI;
 
 my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
@@ -34,10 +38,14 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
         template_name   => "cataloging/marc_editor.tt",
         query           => $cgi,
         type            => "intranet",
-        authnotrequired => 0,
+        authnotrequired => 1, #0,
         flagsrequired   => { editcatalogue => 'edit_catalogue' },
         debug           => 1,
     }
 );
+
+my $marc_editor = Koha::MarcEditor->new($cgi->param('record_type'));
+
+$template->param( record_type => $marc_editor->record_type );
 
 output_html_with_http_headers $cgi, $cookie, $template->output;

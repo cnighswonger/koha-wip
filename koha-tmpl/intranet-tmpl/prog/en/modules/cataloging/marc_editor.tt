@@ -20,6 +20,7 @@
     [% INCLUDE 'doc-head-open.inc' %]
     <title>Koha &rsaquo; Cataloging &rsaquo; Marc editor</title>
     [% INCLUDE 'doc-head-close.inc' %]
+<!--
     <link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
     <link rel="stylesheet" type="text/css" href="[% themelang %]/css/quotes.css" />
     <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
@@ -32,6 +33,7 @@
     //<![CDATA[
     //]]>
     </script>
+-->
 </head>
 <body id="marc_editor" class="cataloging">
 [% INCLUDE 'header.inc' %]
@@ -43,6 +45,7 @@
     <div id="bd">
         <div id="yui-main">
             <div class="yui-b">
+                <b>[% record_type %]</b>
             </div>
         </div>
     <div class="yui-b noprint">
