@@ -15,7 +15,11 @@
                     000
                 </th>
                 <td>
-                    <xsl:value-of select="marc:leader"/>
+                    <input type="text">
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="marc:leader"/>
+                        </xsl:attribute>
+                    </input>
                 </td>
             </tr>
             <xsl:apply-templates select="marc:datafield|marc:controlfield"/>
@@ -28,7 +32,15 @@
                 <xsl:value-of select="@tag"/>
             </th>
             <td>
-                <xsl:value-of select="."/>
+                <xsl:attribute name="id">
+                    <xsl:value-of select="@tag"/>
+                </xsl:attribute>
+                <input type="text">
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="."/>
+                    </xsl:attribute>
+                </input>
+
             </td>
         </tr>
     </xsl:template>
