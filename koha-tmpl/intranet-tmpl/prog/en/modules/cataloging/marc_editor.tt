@@ -45,7 +45,11 @@
     <div id="bd">
         <div id="yui-main">
             <div class="yui-b">
-                <b>[% record_type %]</b>
+                <li><b>Record Type: [% record_type %]</b></li>
+                <li><b>Record Id: [% record_id %]</b></li>
+            <div>
+                [% editor %]
+            </div>
             </div>
         </div>
     <div class="yui-b noprint">

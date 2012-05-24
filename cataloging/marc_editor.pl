@@ -26,12 +26,12 @@ use C4::Auth;
 use C4::Koha;
 use C4::Context;
 use C4::Output;
+use C4::Biblio;
 
-use Koha::MarcEditor qw(RECORD_TYPES);
-
-#use constant RECORD_TYPES   => qw(bib auth hold);
+use Koha::MarcEditor;
 
 my $cgi = new CGI;
+my $params = $cgi->Vars;  # NOTE: Multivalue parameters NOT allowed here!!
 
 my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
     {
@@ -44,8 +44,40 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
     }
 );
 
-my $marc_editor = Koha::MarcEditor->new($cgi->param('record_type'));
+my $framework_code = 'TST';
 
-$template->param( record_type => $marc_editor->record_type );
+my $framework_xslt =    C4::Context->config('intrahtdocs') .'/' .
+                        C4::Context->preference("template") . '/' .
+                        C4::Templates::_current_language() . '/' .
+                        'xslt' . '/' .
+                        C4::Context->preference('marcflavour') .
+                        "marceditor$framework_code.xsl";
+
+my $marc_xml = undef;
+
+given ($params->{'record_type'}) {
+    when (/bib/) {
+        $marc_xml = GetXmlBiblio($params->{'record_id'});
+    }
+    when (/auth/) {
+    }
+    when (/hold/) {
+    }
+    default {
+    }
+}
+
+my $marc_editor = Koha::MarcEditor->new(
+    record_type     => $params->{'record_type'},
+    record_id       => $params->{'record_id'},
+    marc_xml        => $marc_xml,
+    framework_xslt  => $framework_xslt,
+);
+
+$template->param(
+    record_type     => $marc_editor->record_type,
+    record_id       => $marc_editor->record_id,
+    editor          => $marc_editor->output_editor,
+);
 
 output_html_with_http_headers $cgi, $cookie, $template->output;
