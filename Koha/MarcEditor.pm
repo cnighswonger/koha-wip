@@ -19,30 +19,80 @@ package Koha::MarcEditor;
 
 use Modern::Perl;
 
-use autouse 'Data::Dumper' => qw(Dumper);
 use Carp;
+use XML::LibXML;
+use XML::LibXSLT;
+use autouse 'Data::Dumper' => qw(Dumper);
 
-use constant RECORD_TYPES   => qw(bib auth hold);
+use vars qw($AUTOLOAD);
 
-our $VERSION    = 0.01;
+use constant REQUIRED_PARAMS    => qw(record_type record_id marc_xml framework_xslt);
+use constant RECORD_TYPES       => qw(bib auth hold);
+
+our $VERSION = 0.01;
 
 sub new {
-    my ($invocant) = shift;
+    my $invocant = shift;
     my $type = ref($invocant) || $invocant;
-    my $record_type = shift;
-    if (!(grep /$record_type/, (RECORD_TYPES))) {
-        croak "Invalid record type: $record_type.";
+    my %params = @_;
+    if (my @missing_params = (grep {$params{$_} eq undef} (REQUIRED_PARAMS))) {
+        croak "Missing required parameter(s): " . join (', ', @missing_params);
+    }
+    if (!(grep /$params{'record_type'}/, (RECORD_TYPES))) {
+        croak "Invalid record type: $params{'record_type'}.";
     }
     my $self = {
-        record_type     => $record_type,
+        record_type     => $params{'record_type'},
+        record_id       => $params{'record_id'},
+        marc_xml        => $params{'marc_xml'},
+        framework_xslt  => $params{'framework_xslt'},
     };
     bless ($self, $type);
     return $self;
 }
 
-sub record_type {
+sub output_editor {
     my $self = shift;
-    return $self->{'record_type'};
+
+    my $xml_parser = XML::LibXML->new(recover => 0);
+    my $xslt_parser = XML::LibXSLT->new();
+
+    my $xml_source = $xml_parser->parse_string($self->{'marc_xml'});
+    my $xslt_stylesheet = $xslt_parser->parse_stylesheet($xml_parser->parse_file($self->{'framework_xslt'}));
+    my $parsed_results = $xslt_stylesheet->transform($xml_source);
+    return $xslt_stylesheet->output_string($parsed_results);
 }
+
+## AUTOLOAD method taken from http://www.perlmonks.org/?node_id=444212
+
+sub AUTOLOAD {
+    my ($self, $value)= @_ ;
+
+    return if $AUTOLOAD =~ /::DESTROY$/ ;
+
+    my $attname = $AUTOLOAD;
+    $attname =~ s/.*::// ;
+
+    if(! exists $self->{$attname}){
+        croak("Attribute $attname does not exists in $self");
+    }
+
+    my $pkg = ref($self ) ;
+    my $code = qq{
+                   package $pkg ;
+                   sub $attname {
+                           my \$self = shift ;
+                           \@_ ? \$self->{$attname} = shift :
+                           \$self->{$attname} ;
+                   }
+       };
+
+    eval $code ;
+    if( $@ ){
+        croak("Failed to create method $AUTOLOAD : $@");
+    }
+    goto &$AUTOLOAD ;
+}
+
 
 1;
