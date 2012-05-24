@@ -12,10 +12,13 @@
         <table>
             <tr>
                 <th NOWRAP="TRUE" ALIGN="RIGHT" VALIGN="TOP">
-                    000
+                000
                 </th>
                 <td>
                     <input type="text">
+                    <xsl:attribute name="id">
+                        <xsl:value-of select="000"/>
+                    </xsl:attribute>
                         <xsl:attribute name="value">
                             <xsl:value-of select="marc:leader"/>
                         </xsl:attribute>
@@ -32,10 +35,10 @@
                 <xsl:value-of select="@tag"/>
             </th>
             <td>
-                <xsl:attribute name="id">
-                    <xsl:value-of select="@tag"/>
-                </xsl:attribute>
                 <input type="text">
+                    <xsl:attribute name="id">
+                        <xsl:value-of select="@tag"/>
+                    </xsl:attribute>
                     <xsl:attribute name="value">
                         <xsl:value-of select="."/>
                     </xsl:attribute>
