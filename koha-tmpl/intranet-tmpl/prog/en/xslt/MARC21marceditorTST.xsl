@@ -25,7 +25,7 @@
         <div id="0">
             <table>
                 <tr>
-                    <th NOWRAP="TRUE" ALIGN="RIGHT" VALIGN="TOP">
+                    <th>
                         000
                     </th>
                     <td>
@@ -93,7 +93,7 @@
 
     <xsl:template match="marc:controlfield">
         <tr>
-            <th NOWRAP="TRUE" ALIGN="RIGHT" VALIGN="TOP">
+            <th>
                 <xsl:value-of select="@tag"/>
             </th>
             <td>
@@ -112,7 +112,7 @@
 
     <xsl:template match="marc:datafield">
         <tr>
-            <th NOWRAP="TRUE" ALIGN="RIGHT" VALIGN="TOP">
+            <th>
                 <xsl:value-of select="@tag"/>
             </th>
             <td>
