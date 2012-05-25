@@ -22,15 +22,6 @@
     <link rel="stylesheet" type="text/css" href="[% themelang %]/css/marc_editor.css">
     [% INCLUDE 'doc-head-close.inc' %]
 
-    <script type="text/javascript">
-    //<![CDATA[
-
-    $(function() {
-        $("#addbibliotabs ul").tabs();
-    });
-
-    //]]>
-    </script>
 </head>
 <body id="marc_editor" class="cataloging">
 [% INCLUDE 'header.inc' %]

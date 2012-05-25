@@ -4,6 +4,14 @@
 
     <xsl:template match="/">
         <html>
+            <script type="text/javascript">
+            //<![CDATA[
+            $(function() {
+                $("#addbibliotabs ul").tabs();
+            });
+            //]]>
+            </script>
+
             <xsl:apply-templates/>
         </html>
     </xsl:template>
