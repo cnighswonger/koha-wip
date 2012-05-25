@@ -26,7 +26,8 @@ use C4::Auth;
 use C4::Koha;
 use C4::Context;
 use C4::Output;
-use C4::Biblio;
+use C4::Biblio qw(GetXmlBiblio);
+use C4::AuthoritiesMarc qw(GetAuthorityXML);
 
 use Koha::MarcEditor;
 
@@ -54,12 +55,30 @@ my $framework_xslt =    C4::Context->config('intrahtdocs') .'/' .
                         "marceditor$framework_code.xsl";
 
 my $marc_xml = undef;
+my $marc_editor = undef;
+my $display_title = undef;
 
 given ($params->{'record_type'}) {
     when (/bib/) {
         $marc_xml = GetXmlBiblio($params->{'record_id'});
+        $marc_editor = Koha::MarcEditor->new(
+            record_type     => $params->{'record_type'},
+            record_id       => $params->{'record_id'},
+            marc_xml        => $marc_xml,
+            framework_xslt  => $framework_xslt,
+        );
+        $display_title = $marc_editor->bib_title . ' / ' . $marc_editor->bib_author;
+
     }
     when (/auth/) {
+        $marc_xml = GetAuthorityXML($params->{'record_id'});
+        $marc_editor = Koha::MarcEditor->new(
+            record_type     => $params->{'record_type'},
+            record_id       => $params->{'record_id'},
+            marc_xml        => $marc_xml,
+            framework_xslt  => $framework_xslt,
+        );
+        $display_title = $marc_editor->auth_type;
     }
     when (/hold/) {
     }
@@ -69,19 +88,11 @@ given ($params->{'record_type'}) {
     }
 }
 
-my $marc_editor = Koha::MarcEditor->new(
-    record_type     => $params->{'record_type'},
-    record_id       => $params->{'record_id'},
-    marc_xml        => $marc_xml,
-    framework_xslt  => $framework_xslt,
-);
-
 $template->param(
     record_type     => $marc_editor->record_type,
     record_id       => $marc_editor->record_id,
     editor          => $marc_editor->output_editor,
-    display_title   => $marc_editor->display_title,
-    display_author  => $marc_editor->display_author,
+    display_title   => $display_title,
 );
 
 output_html_with_http_headers $cgi, $cookie, $template->output;

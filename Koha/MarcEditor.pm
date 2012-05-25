@@ -43,25 +43,54 @@ sub new {
         croak "Invalid record type: $params{'record_type'}.";
     }
 
-    my $marc = MARC::Record->new_from_xml($params{'marc_xml'},'UTF8');
-    my $display_title = $marc->subfield('245','a') . $marc->subfield('245','b');
-    my $display_author =
-        $marc->subfield('100', 'a') ? $marc->subfield('100', 'a') :
-        $marc->subfield('110', 'a') ? $marc->subfield('110', 'a') :
-        $marc->subfield('111', 'a') ? $marc->subfield('111', 'a') :
-        '';
-    # cleanup data
-    $display_title =~ s/:|\///g;
-    $display_author =~ s/:|\///g;
-
     my $self = {
         record_type     => $params{'record_type'},
         record_id       => $params{'record_id'},
         marc_xml        => $params{'marc_xml'},
         framework_xslt  => $params{'framework_xslt'},
-        display_title   => $display_title,
-        display_author  => $display_author,
+        bib_title       => '',
+        bib_author      => '',
+        auth_type       => '',
     };
+
+    my $marc = MARC::Record->new_from_xml($params{'marc_xml'},'UTF8');
+
+    given($params{'record_type'}) {
+        when (/bib/) {
+            my $bib_title = $marc->subfield('245','a') . $marc->subfield('245','b');
+            my $bib_author =
+                $marc->subfield('100', 'a') ? $marc->subfield('100', 'a') :
+                $marc->subfield('110', 'a') ? $marc->subfield('110', 'a') :
+                $marc->subfield('111', 'a') ? $marc->subfield('111', 'a') :
+                '';
+
+            # cleanup data
+            $bib_title  =~ s/:|\///g;
+            $bib_author =~ s/:|\///g;
+
+            $self->{'bib_title'}    = $bib_title;
+            $self->{'bib_author'}   = $bib_author;
+        }
+        when (/auth/) {
+            my $auth_type =
+                $marc->subfield('100', 'a') ? $marc->subfield('100', 'a') :
+                $marc->subfield('110', 'a') ? $marc->subfield('110', 'a') :
+                $marc->subfield('111', 'a') ? $marc->subfield('111', 'a') :
+                '';
+
+            $auth_type =~ s/:|\///g;
+
+            $self->{'auth_type'}   = $auth_type;
+        }
+        when (/hold/) {
+        }
+        when (/item/) {
+        }
+        default {
+        }
+    }
+
+
     bless ($self, $type);
     return $self;
 }
