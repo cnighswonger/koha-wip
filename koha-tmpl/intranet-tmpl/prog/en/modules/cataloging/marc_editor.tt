@@ -20,20 +20,29 @@
     [% INCLUDE 'doc-head-open.inc' %]
     <title>Koha &rsaquo; Cataloging &rsaquo; Marc editor</title>
     [% INCLUDE 'doc-head-close.inc' %]
+    <link rel="shortcut icon" href="[% themelang %]/includes/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="[% themelang %]/lib/jquery/plugins/ui.tabs.css">
+    <link rel="stylesheet" type="text/css" href="[% themelang %]/css/staff-global.css">
+    <script type="text/javascript" src="[% themelang %]/lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/ui.tabs.js"></script>
 <!--
     <link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
-    <link rel="stylesheet" type="text/css" href="[% themelang %]/css/quotes.css" />
     <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/dataTables.fnReloadAjax.js"></script>
     [% INCLUDE 'datatables-strings.inc' %]
     </script>
     <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
     <script type="text/javascript" src="[% themelang %]/js/jquery.jeditable.mini.js"></script>
+-->
     <script type="text/javascript">
     //<![CDATA[
+
+    $(function() {
+        $("#addbibliotabs").tabs();
+    });
+
     //]]>
     </script>
--->
 </head>
 <body id="marc_editor" class="cataloging">
 [% INCLUDE 'header.inc' %]
