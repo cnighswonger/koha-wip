@@ -63,6 +63,8 @@ given ($params->{'record_type'}) {
     }
     when (/hold/) {
     }
+    when (/item/) {
+    }
     default {
     }
 }

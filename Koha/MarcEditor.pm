@@ -27,7 +27,7 @@ use autouse 'Data::Dumper' => qw(Dumper);
 use vars qw($AUTOLOAD);
 
 use constant REQUIRED_PARAMS    => qw(record_type record_id marc_xml framework_xslt);
-use constant RECORD_TYPES       => qw(bib auth hold);
+use constant RECORD_TYPES       => qw(bib auth hold item);
 
 our $VERSION = 0.01;
 
