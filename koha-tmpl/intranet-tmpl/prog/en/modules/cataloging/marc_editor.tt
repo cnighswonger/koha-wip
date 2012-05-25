@@ -32,7 +32,7 @@
     <div id="bd">
         <div id="yui-main">
             <div class="yui-g">
-                <h1>Editing <em>PLACEHOLDER</em> (Record number [% record_id %])</h1>
+                <h1>Editing <em>[% display_title %] / [% display_author %]</em> (Record number [% record_id %])</h1>
                 <div><input type="checkbox" name="marcDocsSelect" id="marcDocsSelect" checked="true"> Show MARC tag documentation links<br></div>
                 <div id="toolbar" style="width: 738px; position: absolute; ">TOOLBAR</div>
                 <div style="display: block; visibility: hidden; width: 750px; height: 45px; "></div>

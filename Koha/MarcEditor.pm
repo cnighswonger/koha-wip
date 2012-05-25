@@ -22,6 +22,7 @@ use Modern::Perl;
 use Carp;
 use XML::LibXML;
 use XML::LibXSLT;
+use MARC::File::XML;
 use autouse 'Data::Dumper' => qw(Dumper);
 
 use vars qw($AUTOLOAD);
@@ -41,11 +42,25 @@ sub new {
     if (!(grep /$params{'record_type'}/, (RECORD_TYPES))) {
         croak "Invalid record type: $params{'record_type'}.";
     }
+
+    my $marc = MARC::Record->new_from_xml($params{'marc_xml'},'UTF8');
+    my $display_title = $marc->subfield('245','a') . $marc->subfield('245','b');
+    my $display_author =
+        $marc->subfield('100', 'a') ? $marc->subfield('100', 'a') :
+        $marc->subfield('110', 'a') ? $marc->subfield('110', 'a') :
+        $marc->subfield('111', 'a') ? $marc->subfield('111', 'a') :
+        '';
+    # cleanup data
+    $display_title =~ s/:|\///g;
+    $display_author =~ s/:|\///g;
+
     my $self = {
         record_type     => $params{'record_type'},
         record_id       => $params{'record_id'},
         marc_xml        => $params{'marc_xml'},
         framework_xslt  => $params{'framework_xslt'},
+        display_title   => $display_title,
+        display_author  => $display_author,
     };
     bless ($self, $type);
     return $self;
@@ -73,7 +88,7 @@ sub AUTOLOAD {
     $attname =~ s/.*:://;
 
     if(!exists $self->{$attname}){
-        croak("Attribute $attname does not exists in $self");
+        croak("Attribute \'$attname\' does not exists in $self");
     }
 
     my $pkg = ref($self);

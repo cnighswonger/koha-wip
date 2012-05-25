@@ -80,6 +80,8 @@ $template->param(
     record_type     => $marc_editor->record_type,
     record_id       => $marc_editor->record_id,
     editor          => $marc_editor->output_editor,
+    display_title   => $marc_editor->display_title,
+    display_author  => $marc_editor->display_author,
 );
 
 output_html_with_http_headers $cgi, $cookie, $template->output;
