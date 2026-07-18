@@ -22,12 +22,24 @@ _Last updated: 2026-07-18 12:11 UTC_
 <!-- ROADMAP:BEGIN (human-editable; the dashboard updater preserves this section) -->
 ### Near term
 
-1. **Bug 41718** — fix `draw_guide_grid()` argument handling (removes the known
-   warnings the Bug 41719 tests currently filter around; follow-up will drop
-   those filters).
-2. **Bugs 28806 / 31241** — re-test the broken-PDF-export reports against
-   PDF::Reuse 0.43 (Bug 41717) in koha-testing-docker; report findings on
-   Bugzilla. Verification only, no new patches expected.
+1. **Bug 28806** — fix silent label-content loss for items with NULL
+   homebranch. Re-testing (2026-07-18, koha-testing-docker) found the
+   mechanism: `_get_label_item()` INNER-joins on
+   `i.homebranch=br.branchcode`, so such items return no row and BIBBAR
+   labels silently collapse to barcode-only; a die after the CGI header
+   explains the zero-byte downloads users reported. Fix: LEFT JOIN +
+   warn. PDF::Reuse version was ruled out (renders fine on 0.39 and
+   0.43). Patch staged internally; Bugzilla attachment held until the
+   in-flight queue clears.
+2. **Follow-up (after 41718 + 41719 land upstream)** — remove the
+   now-redundant `run_allowing_bug_41718_warnings` filter from
+   t_Patroncard.t.
+
+### Recently verified (no patches needed)
+
+- **Bug 31241** — exports work on current main; Error-500 symptom was
+  Bug 34157 (RESOLVED FIXED), zero-byte symptom tracks Bug 28806.
+  Closure candidate absent new reports on supported releases.
 
 ### Principles
 
