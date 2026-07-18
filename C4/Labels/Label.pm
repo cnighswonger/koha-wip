@@ -15,6 +15,7 @@ use Koha::Biblios;
 use Koha::ClassSources;
 use Koha::ClassSortRules;
 use Koha::ClassSplitRules;
+use Koha::Logger;
 use C4::ClassSplitRoutine::Dewey;
 use C4::ClassSplitRoutine::LCC;
 use C4::ClassSplitRoutine::Generic;
@@ -87,14 +88,23 @@ sub _get_label_item {
     #        FIXME This makes for a very bulky data structure; data from tables w/duplicate col names also gets overwritten.
     #        Something like this, perhaps, but this also causes problems because we need more fields sometimes.
     #        SELECT i.barcode, i.itemcallnumber, i.itype, bi.isbn, bi.issn, b.title, b.author
+    # LEFT JOIN branches: an item whose homebranch is NULL or invalid must
+    # still yield its bibliographic data; the old implicit INNER join
+    # dropped the row entirely, silently losing all label text (bug 28806).
     my $sth = $dbh->prepare(
-        "SELECT bi.*, i.*, b.*,br.* FROM items AS i, biblioitems AS bi ,biblio AS b, branches AS br WHERE itemnumber=? AND i.biblioitemnumber=bi.biblioitemnumber AND bi.biblionumber=b.biblionumber AND i.homebranch=br.branchcode;"
+        "SELECT bi.*, i.*, b.*, br.* FROM items AS i JOIN biblioitems AS bi ON i.biblioitemnumber = bi.biblioitemnumber JOIN biblio AS b ON bi.biblionumber = b.biblionumber LEFT JOIN branches AS br ON i.homebranch = br.branchcode WHERE itemnumber = ?;"
     );
     $sth->execute($item_number);
     if ( $sth->err ) {
         warn sprintf( 'Database returned the following error: %s', $sth->errstr );
     }
     my $data = $sth->fetchrow_hashref;
+    unless ($data) {
+        Koha::Logger->get->warn(
+            "No item/bibliographic data found for item number $item_number; the label for this item will be incomplete."
+        );
+        return $barcode_only ? undef : {};
+    }
 
     # Replaced item's itemtype with the more user-friendly description...
     my $sth1 = $dbh->prepare("SELECT itemtype,description FROM itemtypes WHERE itemtype = ?");
