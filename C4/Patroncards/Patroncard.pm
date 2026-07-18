@@ -217,9 +217,9 @@ sub draw_guide_grid {
     my $strtop    = sprintf( '%.2f', $self->{'width'} / $self->{'unitvalue'} ) . '/'
         . sprintf( '%.2f', $self->{'height'} / $self->{'unitvalue'} );
     my $font_size = 6;
-    $pdf->Font('Courier');
+    $pdf->Font('C');         # 'C' is the <ttf> config code for the monospace (Courier-style) face
     $pdf->FontSize($font_size);
-    my $strtop_len = $pdf->StrWidth($strtop) * 1.5;
+    my $strtop_len = $pdf->StrWidth( $strtop, 'C', $font_size ) * 1.5;
     $pdf->Text( $self->{'llx'} + 2, $self->{'lly'} + 2, $strbottom );
     $pdf->Text(
         $self->{'llx'} + $self->{'width'} - $strtop_len, $self->{'lly'} + $self->{'height'} - $font_size,
