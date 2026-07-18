@@ -1,6 +1,6 @@
 package C4::Patroncards::Patroncard;
 
-# Copyright 2009 Foundations Bible College.
+# Copyright 2009, 2026 Foundations Bible College.
 #
 # This file is part of Koha.
 #
@@ -21,6 +21,7 @@ use strict;
 use warnings;
 
 use autouse 'Data::Dumper' => qw(Dumper);
+use Algorithm::CheckDigits qw( CheckDigits );
 
 #use Font::TTFMetrics;
 
