@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # Copyright 2006 Katipo Communications.
-# Parts Copyright 2009 Foundations Bible College.
+# Parts Copyright 2009, 2026 Foundations Bible College.
 #
 # This file is part of Koha.
 #
@@ -20,7 +20,8 @@
 
 use Modern::Perl;
 
-use CGI qw ( -utf8 );
+use CGI          qw ( -utf8 );
+use Scalar::Util qw( blessed );
 
 use C4::Auth     qw( get_template_and_user );
 use C4::Output   qw( output_html_with_http_headers );
@@ -42,6 +43,7 @@ my $profile_id     = $cgi->param('profile_id') || $cgi->param('element_id');
 my $profile        = undef;
 my $template_list  = undef;
 my @label_template = ();
+my $error          = '';
 
 my $units = get_unit_values();
 
@@ -49,30 +51,45 @@ if ( $op eq 'edit_form' ) {
     $profile       = C4::Labels::Profile->retrieve( profile_id => $profile_id );
     $template_list = get_all_templates( { fields => [qw( template_id template_code profile_id)] } );
 } elsif ( $op eq 'cud-save' ) {
-    my @params = (
-        printer_name => scalar $cgi->param('printer_name') || 'DEFAULT PRINTER',
-        paper_bin    => scalar $cgi->param('paper_bin')    || 'Tray 1',
-        offset_horz  => scalar $cgi->param('offset_horz')  || 0,
-        offset_vert  => scalar $cgi->param('offset_vert')  || 0,
-        creep_horz   => scalar $cgi->param('creep_horz')   || 0,
-        creep_vert   => scalar $cgi->param('creep_vert')   || 0,
-        units        => scalar $cgi->param('units')        || 'POINT',
+    my $printer_name = $cgi->param('printer_name') // '';
+    my $paper_bin    = $cgi->param('paper_bin')    // '';
+    my @params       = (
+        printer_name => $printer_name,
+        paper_bin    => $paper_bin,
+        offset_horz  => scalar $cgi->param('offset_horz') || 0,
+        offset_vert  => scalar $cgi->param('offset_vert') || 0,
+        creep_horz   => scalar $cgi->param('creep_horz')  || 0,
+        creep_vert   => scalar $cgi->param('creep_vert')  || 0,
+        units        => scalar $cgi->param('units')       || 'POINT',
     );
-    if ($profile_id) {    # if a label_id was passed in, this is an update to an existing layout
-        $profile = C4::Labels::Profile->retrieve( profile_id => $profile_id );
-        $profile->set_attr(@params);
-        $profile->save();
-    } else {              # if no label_id, this is a new layout so insert it
+
+    if ( $printer_name eq '' || $paper_bin eq '' ) {
+        $error   = 'missing_required';
         $profile = C4::Labels::Profile->new(@params);
-        $profile->save();
+    } else {
+        if ($profile_id) {    # if a label_id was passed in, this is an update to an existing layout
+            $profile = C4::Labels::Profile->retrieve( profile_id => $profile_id );
+            $profile->set_attr(@params);
+        } else {              # if no label_id, this is a new layout so insert it
+            $profile = C4::Labels::Profile->new(@params);
+        }
+
+        # printers_profile has a UNIQUE key on (printer_name, template_id, paper_bin, creator)
+        eval { $profile->save() };
+        if ( my $exception = $@ ) {
+            die $exception
+                unless blessed($exception) && $exception->isa('Koha::Exceptions::Object::DuplicateID');
+            $error = 'duplicate';
+        } else {
+            print $cgi->redirect("label-manage.pl?label_element=profile");
+            exit;
+        }
     }
-    print $cgi->redirect("label-manage.pl?label_element=profile");
-    exit;
 } else {    # if we get here, this is a new layout
     $profile = C4::Labels::Profile->new();
 }
 
-if ($profile_id) {
+if ( $profile_id && $template_list ) {
     @label_template = grep {
                ( $_->{'profile_id'} == $profile->get_attr('profile_id') )
             && ( $_->{'template_id'} == $profile->get_attr('template_id') );
@@ -97,6 +114,7 @@ $template->param(
     creep_vert     => $profile->get_attr('creep_vert'),
     units          => $units,
     op             => $op,
+    error          => $error,
 );
 
 output_html_with_http_headers $cgi, $cookie, $template->output;

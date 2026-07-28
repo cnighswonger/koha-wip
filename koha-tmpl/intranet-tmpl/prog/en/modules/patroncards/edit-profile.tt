@@ -54,6 +54,15 @@
             <span>New printer profile</span>
         [% END %]
     </h1>
+    [% IF ( error == 'missing_required' ) %]
+        <div class="alert alert-warning"> <strong>WARNING:</strong> <span>Printer name and paper bin are both required. The profile was not saved.</span> </div>
+    [% ELSIF ( error == 'duplicate' ) %]
+        <div class="alert alert-warning">
+            <strong>WARNING:</strong>
+            <span>A printer profile with this printer name and paper bin already exists. The profile was not saved.</span>
+        </div>
+    [% END %]
+
     <form name="input" action="/cgi-bin/koha/patroncards/edit-profile.pl" method="post">
         [% INCLUDE 'csrf-token.inc' %]
         <fieldset class="rows"
@@ -64,7 +73,8 @@
                         <span class="label">Printer name:</span>[% printer_name | html %]
                         <input type="hidden" name="printer_name" value="[% printer_name | html %]" />
                     [% ELSE %]
-                        <label for="printer_name">Printer name:</label><input type="text" size="20" name="printer_name" id="printer_name" />
+                        <label for="printer_name">Printer name:</label><input type="text" size="20" name="printer_name" id="printer_name" value="[% printer_name | html %]" required="required" />
+                        <span class="required">Required</span>
                     [% END %]
                 </li>
                 <li>
@@ -72,7 +82,8 @@
                         <span class="label">Paper bin:</span> [% paper_bin | html %]
                         <input type="hidden" name="paper_bin" value="[% paper_bin | html %]" />
                     [% ELSE %]
-                        <label for="paper_bin">Paper bin:</label><input type="text" size="20" name="paper_bin" id="paper_bin" />
+                        <label for="paper_bin">Paper bin:</label><input type="text" size="20" name="paper_bin" id="paper_bin" value="[% paper_bin | html %]" required="required" />
+                        <span class="required">Required</span>
                     [% END %]
                 </li>
                 <li>
