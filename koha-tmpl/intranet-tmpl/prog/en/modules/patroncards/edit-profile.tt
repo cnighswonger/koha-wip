@@ -54,25 +54,43 @@
             <span>New printer profile</span>
         [% END %]
     </h1>
+    [% IF ( error == 'missing_required' ) %]
+        <div class="alert alert-warning"> <strong>WARNING:</strong> <span>Printer name and paper bin are both required. The profile was not saved.</span> </div>
+    [% ELSIF ( error == 'duplicate' ) %]
+        <div class="alert alert-warning">
+            <strong>WARNING:</strong>
+            <span>A printer profile with this printer name and paper bin already exists. The profile was not saved.</span>
+        </div>
+    [% ELSIF ( error == 'save_failed' ) %]
+        <div class="alert alert-warning">
+            <strong>WARNING:</strong>
+            <span>The database returned an error while saving this profile. Please have your system administrator check the error log for details.</span>
+        </div>
+    [% END %]
+
     <form name="input" action="/cgi-bin/koha/patroncards/edit-profile.pl" method="post">
         [% INCLUDE 'csrf-token.inc' %]
         <fieldset class="rows"
             ><legend>Profile settings</legend>
             <ol>
                 <li>
-                    [% IF ( profile_id ) %]
+                    [% IF ( profile_id && printer_name && !error ) %]
                         <span class="label">Printer name:</span>[% printer_name | html %]
                         <input type="hidden" name="printer_name" value="[% printer_name | html %]" />
                     [% ELSE %]
-                        <label for="printer_name">Printer name:</label><input type="text" size="20" name="printer_name" id="printer_name" />
+                        <label for="printer_name">Printer name:</label
+                        ><input type="text" size="20" maxlength="40" name="printer_name" id="printer_name" value="[% printer_name | html %]" required="required" />
+                        <span class="required">Required</span>
                     [% END %]
                 </li>
                 <li>
-                    [% IF ( profile_id ) %]
+                    [% IF ( profile_id && paper_bin && !error ) %]
                         <span class="label">Paper bin:</span> [% paper_bin | html %]
                         <input type="hidden" name="paper_bin" value="[% paper_bin | html %]" />
                     [% ELSE %]
-                        <label for="paper_bin">Paper bin:</label><input type="text" size="20" name="paper_bin" id="paper_bin" />
+                        <label for="paper_bin">Paper bin:</label
+                        ><input type="text" size="20" maxlength="20" name="paper_bin" id="paper_bin" value="[% paper_bin | html %]" required="required" />
+                        <span class="required">Required</span>
                     [% END %]
                 </li>
                 <li>
