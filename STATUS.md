@@ -2,12 +2,14 @@
 
 High-level view of label/patron-card work staged here for Koha. Auto-updated daily; see [README.koha-wip.md](README.koha-wip.md) for what this repository is. **Bugzilla is the source of truth.**
 
-_Last updated: 2026-07-28 17:18 UTC_
+_Last updated: 2026-07-29 14:50 UTC_
 
 ## In flight
 
 | Bug | Internal PR | Bugzilla status | Upstream |
 |---|---|---|---|
+| [Bug 21052](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=21052) | [#96](https://github.com/cnighswonger/koha-wip/pull/96) (merged) | Needs Signoff | pending |
+| [Bug 21052](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=21052) | [#95](https://github.com/cnighswonger/koha-wip/pull/95) (closed) | Needs Signoff | pending |
 | [Bug 28806](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=28806) | [#94](https://github.com/cnighswonger/koha-wip/pull/94) (merged) | Needs Signoff | pending |
 | [Bug 41718](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=41718) | [#93](https://github.com/cnighswonger/koha-wip/pull/93) (merged) | Needs Signoff | pending |
 | [Bug 41719](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=41719) | [#1](https://github.com/cnighswonger/koha-wip/pull/1) (merged) | Needs Signoff | pending |
@@ -73,4 +75,4 @@ the source of truth; nothing here confers status in the Koha project.
 
 ## Triage board
 
-[88 open bugs](https://github.com/cnighswonger/koha-wip/issues?q=is%3Aissue+is%3Aopen+label%3Abz-mirror) mirrored from the Bugzilla *Label/patron card printing* component (34 defects, 54 enhancements), synced daily. Mirror issues close only when a bug's fix is pushed to official Koha. Bugs sharing a root cause are grouped by `cluster:*` labels — see [CLUSTERS.md](CLUSTERS.md).
+[89 open bugs](https://github.com/cnighswonger/koha-wip/issues?q=is%3Aissue+is%3Aopen+label%3Abz-mirror) mirrored from the Bugzilla *Label/patron card printing* component (36 defects, 53 enhancements), synced daily. Mirror issues close only when a bug's fix is pushed to official Koha.
