@@ -549,6 +549,7 @@ sub barcode {
                 ySize         => $params{'y_scale_factor'},
                 hide_asterisk => 1,
                 text          => $hide_text,
+                textsize      => $self->{'font_size'},
                 mode          => 'graphic',
             );
         };
@@ -561,12 +562,13 @@ sub barcode {
         $x_scale_factor = ( $params{'width'} / $tot_bar_length ) * 0.9;
         eval {
             PDF::Reuse::Barcode::COOP2of5(
-                x     => $params{'llx'},
-                y     => $params{'lly'},
-                value => $params{barcode_data},
-                xSize => $x_scale_factor,
-                ySize => $params{'y_scale_factor'},
-                mode  => 'graphic',
+                x        => $params{'llx'},
+                y        => $params{'lly'},
+                value    => $params{barcode_data},
+                xSize    => $x_scale_factor,
+                ySize    => $params{'y_scale_factor'},
+                textsize => $self->{'font_size'},
+                mode     => 'graphic',
             );
         };
         if ($@) {
@@ -578,12 +580,13 @@ sub barcode {
         $x_scale_factor = ( $params{'width'} / $tot_bar_length ) * 0.9;
         eval {
             PDF::Reuse::Barcode::Industrial2of5(
-                x     => $params{'llx'},
-                y     => $params{'lly'},
-                value => $params{barcode_data},
-                xSize => $x_scale_factor,
-                ySize => $params{'y_scale_factor'},
-                mode  => 'graphic',
+                x        => $params{'llx'},
+                y        => $params{'lly'},
+                value    => $params{barcode_data},
+                xSize    => $x_scale_factor,
+                ySize    => $params{'y_scale_factor'},
+                textsize => $self->{'font_size'},
+                mode     => 'graphic',
             );
         };
         if ($@) {
