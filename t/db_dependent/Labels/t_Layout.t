@@ -20,7 +20,7 @@
 use Modern::Perl;
 
 use Test::NoWarnings;
-use Test::More tests => 59;
+use Test::More tests => 60;
 
 use C4::Context;
 use Koha::Database;
@@ -33,22 +33,23 @@ my $schema = Koha::Database->new->schema;
 $schema->storage->txn_begin;
 
 my $default_layout = {
-    barcode_type  => 'CODE39',
-    callnum_split => 0,
-    creator       => 'Labels',
-    font          => 'TR',
-    font_size     => 3,
-    format_string => 'title, author, isbn, issn, itemtype, barcode, itemcallnumber',
-    guidebox      => 0,
-    layout_name   => 'TEST',
-    layout_xml    => '',
-    oblique_title => 1,
-    printing_type => 'BAR',
-    scale_height  => 0.01,
-    scale_width   => 0.8,
-    start_label   => 1,
-    text_justify  => 'L',
-    units         => 'POINT',
+    barcode_type      => 'CODE39',
+    callnum_split     => 0,
+    creator           => 'Labels',
+    font              => 'TR',
+    font_size         => 3,
+    barcode_font_size => 10,
+    format_string     => 'title, author, isbn, issn, itemtype, barcode, itemcallnumber',
+    guidebox          => 0,
+    layout_name       => 'TEST',
+    layout_xml        => '',
+    oblique_title     => 1,
+    printing_type     => 'BAR',
+    scale_height      => 0.01,
+    scale_width       => 0.8,
+    start_label       => 1,
+    text_justify      => 'L',
+    units             => 'POINT',
 };
 
 my $layout;

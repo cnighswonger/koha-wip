@@ -209,6 +209,14 @@
                     <input type="text" name="scale_height" id="scale_height" size="2" value="[% scale_height | html %]" />
                 </li>
                 <li>
+                    <label for="barcode_font_size">Barcode text size: </label>
+                    <input type="text" name="barcode_font_size" id="barcode_font_size" size="2" value="[% barcode_font_size | html %]" />
+                    <div class="hint">
+                        <p>Size of the number printed below the barcode. Scaled by the barcode width and height above, so the printed size is smaller than the value entered.</p>
+                        <p>Has no effect on EAN13 barcodes, which place their text at a size fixed by the barcode standard.</p>
+                    </div>
+                </li>
+                <li>
                     <label for="oblique_title">Oblique title: </label>
                     [% IF ( oblique_title ) %]
                         <input type="checkbox" name="oblique_title" id="oblique_title" value="1" checked="checked" />

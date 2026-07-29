@@ -103,18 +103,19 @@ if ( $op eq 'edit_form' ) {
         $cgi->param( 'format_string', $format_string );
     }
     my @params = (
-        barcode_type  => scalar $cgi->param('barcode_type')  || 'CODE39',
-        printing_type => scalar $cgi->param('printing_type') || 'BAR',
-        layout_name   => scalar $cgi->param('layout_name')   || 'DEFAULT',
-        guidebox      => ( $cgi->param('guidebox')      ? 1 : 0 ),
-        oblique_title => ( $cgi->param('oblique_title') ? 1 : 0 ),
-        font          => scalar $cgi->param('font')         || 'TR',
-        font_size     => scalar $cgi->param('font_size')    || 3,
-        scale_width   => scalar $cgi->param('scale_width')  || 0.8,
-        scale_height  => scalar $cgi->param('scale_height') || 0.01,
-        callnum_split => ( $cgi->param('callnum_split') ? 1 : 0 ),
-        text_justify  => scalar $cgi->param('text_justify') || 'L',
-        format_string => scalar $cgi->param('format_string')
+        barcode_type      => scalar $cgi->param('barcode_type')  || 'CODE39',
+        printing_type     => scalar $cgi->param('printing_type') || 'BAR',
+        layout_name       => scalar $cgi->param('layout_name')   || 'DEFAULT',
+        guidebox          => ( $cgi->param('guidebox')      ? 1 : 0 ),
+        oblique_title     => ( $cgi->param('oblique_title') ? 1 : 0 ),
+        font              => scalar $cgi->param('font')              || 'TR',
+        font_size         => scalar $cgi->param('font_size')         || 3,
+        barcode_font_size => scalar $cgi->param('barcode_font_size') || 10,
+        scale_width       => scalar $cgi->param('scale_width')       || 0.8,
+        scale_height      => scalar $cgi->param('scale_height')      || 0.01,
+        callnum_split     => ( $cgi->param('callnum_split') ? 1 : 0 ),
+        text_justify      => scalar $cgi->param('text_justify') || 'L',
+        format_string     => scalar $cgi->param('format_string')
             || 'title, author, isbn, issn, itemtype, barcode, itemcallnumber',
     );
     if ($layout_id) {    # if a label_id was passed in, this is an update to an existing layout
@@ -150,6 +151,7 @@ $template->param(
     guidebox                 => $layout->get_attr('guidebox'),
     oblique_title            => $layout->get_attr('oblique_title'),
     font_size                => $layout->get_attr('font_size'),
+    barcode_font_size        => $layout->get_attr('barcode_font_size'),
     scale_width              => $layout->get_attr('scale_width'),
     scale_height             => $layout->get_attr('scale_height'),
     callnum_split            => $layout->get_attr('callnum_split'),

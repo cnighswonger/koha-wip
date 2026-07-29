@@ -299,27 +299,28 @@ sub new {
     my ( $invocant, %params ) = @_;
     my $type = ref($invocant) || $invocant;
     my $self = {
-        batch_id         => $params{'batch_id'},
-        item_number      => $params{'item_number'},
-        llx              => $params{'llx'},
-        lly              => $params{'lly'},
-        height           => $params{'height'},
-        width            => $params{'width'},
-        top_text_margin  => $params{'top_text_margin'},
-        left_text_margin => $params{'left_text_margin'},
-        barcode_type     => $params{'barcode_type'},
-        printing_type    => $params{'printing_type'},
-        guidebox         => $params{'guidebox'},
-        oblique_title    => $params{'oblique_title'},
-        font             => $params{'font'},
-        font_size        => $params{'font_size'},
-        scale_width      => $params{'scale_width'},
-        scale_height     => $params{'scale_height'},
-        callnum_split    => $params{'callnum_split'},
-        justify          => $params{'justify'},
-        format_string    => $params{'format_string'},
-        text_wrap_cols   => $params{'text_wrap_cols'},
-        barcode          => $params{'barcode'},
+        batch_id          => $params{'batch_id'},
+        item_number       => $params{'item_number'},
+        llx               => $params{'llx'},
+        lly               => $params{'lly'},
+        height            => $params{'height'},
+        width             => $params{'width'},
+        top_text_margin   => $params{'top_text_margin'},
+        left_text_margin  => $params{'left_text_margin'},
+        barcode_type      => $params{'barcode_type'},
+        printing_type     => $params{'printing_type'},
+        guidebox          => $params{'guidebox'},
+        oblique_title     => $params{'oblique_title'},
+        font              => $params{'font'},
+        font_size         => $params{'font_size'},
+        barcode_font_size => $params{'barcode_font_size'},
+        scale_width       => $params{'scale_width'},
+        scale_height      => $params{'scale_height'},
+        callnum_split     => $params{'callnum_split'},
+        justify           => $params{'justify'},
+        format_string     => $params{'format_string'},
+        text_wrap_cols    => $params{'text_wrap_cols'},
+        barcode           => $params{'barcode'},
     };
 
     if ( $self->{'guidebox'} ) {
@@ -549,7 +550,7 @@ sub barcode {
                 ySize         => $params{'y_scale_factor'},
                 hide_asterisk => 1,
                 text          => $hide_text,
-                textsize      => $self->{'font_size'},
+                textsize      => $self->{'barcode_font_size'},
                 mode          => 'graphic',
             );
         };
@@ -567,7 +568,7 @@ sub barcode {
                 value    => $params{barcode_data},
                 xSize    => $x_scale_factor,
                 ySize    => $params{'y_scale_factor'},
-                textsize => $self->{'font_size'},
+                textsize => $self->{'barcode_font_size'},
                 mode     => 'graphic',
             );
         };
@@ -585,7 +586,7 @@ sub barcode {
                 value    => $params{barcode_data},
                 xSize    => $x_scale_factor,
                 ySize    => $params{'y_scale_factor'},
-                textsize => $self->{'font_size'},
+                textsize => $self->{'barcode_font_size'},
                 mode     => 'graphic',
             );
         };
