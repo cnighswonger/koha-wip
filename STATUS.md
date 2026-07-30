@@ -2,7 +2,7 @@
 
 High-level view of label/patron-card work staged here for Koha. Auto-updated daily; see [README.koha-wip.md](README.koha-wip.md) for what this repository is. **Bugzilla is the source of truth.**
 
-_Last updated: 2026-07-29 14:50 UTC_
+_Last updated: 2026-07-30 14:50 UTC_
 
 ## In flight
 
@@ -11,6 +11,7 @@ _Last updated: 2026-07-29 14:50 UTC_
 | [Bug 21052](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=21052) | [#96](https://github.com/cnighswonger/koha-wip/pull/96) (merged) | Needs Signoff | pending |
 | [Bug 21052](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=21052) | [#95](https://github.com/cnighswonger/koha-wip/pull/95) (closed) | Needs Signoff | pending |
 | [Bug 28806](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=28806) | [#94](https://github.com/cnighswonger/koha-wip/pull/94) (merged) | Needs Signoff | pending |
+| [Bug 30819](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=30819) | [#99](https://github.com/cnighswonger/koha-wip/pull/99) (open) | ASSIGNED | pending |
 | [Bug 41718](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=41718) | [#93](https://github.com/cnighswonger/koha-wip/pull/93) (merged) | Needs Signoff | pending |
 | [Bug 41719](https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=41719) | [#1](https://github.com/cnighswonger/koha-wip/pull/1) (merged) | Needs Signoff | pending |
 
