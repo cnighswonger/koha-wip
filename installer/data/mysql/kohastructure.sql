@@ -2414,6 +2414,7 @@ CREATE TABLE `creator_layouts` (
   `oblique_title` int(1) DEFAULT 1,
   `font` char(10) NOT NULL DEFAULT 'TR',
   `font_size` int(4) NOT NULL DEFAULT 10,
+  `barcode_font_size` int(4) NOT NULL DEFAULT 10 COMMENT 'font size in points for the human-readable text under a barcode',
   `scale_width` decimal(28,6) NOT NULL DEFAULT 0.800000,
   `scale_height` decimal(28,6) NOT NULL DEFAULT 0.010000,
   `units` char(20) NOT NULL DEFAULT 'POINT',

@@ -93,7 +93,7 @@ requires 'Number::Format', '1.52';
 requires 'OpenOffice::OODoc', '2.125';
 requires 'PDF::API2', '2';
 requires 'PDF::Reuse', '0.43';
-requires 'PDF::Reuse::Barcode', '0.09';
+requires 'PDF::Reuse::Barcode', '0.11';
 requires 'PDF::Table', 'v0.9.3';
 requires 'POSIX', '1.09';
 requires 'Plack::Middleware::LogWarn', '0.001002';
